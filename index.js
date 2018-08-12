@@ -8,7 +8,9 @@ class UELClient {
       network: 'mainnet',
       servicesDir: path.join(__dirname, 'services'),
       services: [
-        'dai'
+        'dai',
+        'erc20',
+        'ds-value'
       ]
     }
     this._defaultProviderConfig = {
@@ -29,7 +31,6 @@ class UELClient {
     // Load provider
     this._provider = new providers[this._config.provider.type](this)
     // Load account
-    console.log(this._config)
     if (this._config.privateKey) {
       this._provider.addPrivateKeyAccount(this._config.privateKey)
     }
@@ -56,10 +57,22 @@ class UELClient {
     }
     return assets
   }
-  async contract(service, id, opts = {}) {
-    const addr = service._index.contracts[this._config.network][id]
-    const abi = service._assets.abi[id]
-    return this._provider.contract(abi, addr, opts)
+  async contract(service, id, opts = {}, localOpts = {}) {
+    let args = {
+      abi: null,
+      addr: null
+    }
+    if (localOpts.addr) {
+      args.addr = localOpts.addr
+    } else {
+      args.addr = service._index.contracts[this._config.network][id]
+    }
+    if (localOpts.abi) {
+      args.abi = localOpts.abi
+    } else {
+      args.abi = service._assets.abi[id]
+    }
+    return this._provider.contract(args.abi, args.addr, opts)
   }
 }
 
