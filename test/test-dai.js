@@ -7,8 +7,8 @@ async function testDai() {
 
   const dai = await client.service('dai')
   const cdp = await dai.getCdp(2715)
-  const value = await cdp.getDebtValue()
-  console.log('Current debt of CDP 2715:', value)
+
+  console.log('Current debt of CDP 2715:', await cdp.getDebtValue())
 
 }
 

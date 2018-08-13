@@ -8,16 +8,6 @@ class Dai extends Service {
   _cdpId(id) {
     return this._utils.numberToBytes32(id)
   }
-  async _call(id, method, opts = []) {
-    const contract = await this._api.contract(this, id)
-    return contract.methods[method].apply(null, opts).call()
-  }
-  async _send(id, method, opts = [], sendOpts = {}) {
-    const contract = await this._api.contract(this, id)
-    const tx = await contract.methods[method].apply(null, opts)
-    sendOpts.gas = parseInt(await tx.estimateGas(sendOpts) * 1.5)
-    return tx.send(sendOpts)
-  }
   async getCdp(id) {
     return new Cdp(this, id)
   }
@@ -25,23 +15,23 @@ class Dai extends Service {
     return new Cdp(this)
   }
   async getTargetPrice() {
-    return this._call('vox', 'par')
+    return this._mcall('vox', 'par')
   }
   async getLiquidationRatio() {
-    const value = await this._call('tub', 'mat')
+    const value = await this._mcall('tub', 'mat')
     return new utils.BN(value.toString()).dividedBy(RAY).toNumber()
   }
   async getDebtValue(id) {
-    return this._call('tub', 'tab', [this._cdpId(id)])
+    return this._mcall('tub', 'tab', [this._cdpId(id)])
   }
   async getCollateralValue(id) {
-    return this._call('tub', 'ink', [this._cdpId(id)])
+    return this._mcall('tub', 'ink', [this._cdpId(id)])
   }
   async getInfo(id) {
-    return this._call('tub', 'cups', [this._cdpId(id)])
+    return this._mcall('tub', 'cups', [this._cdpId(id)])
   }
   async draw(id, value, from) {
-    return this._send('tub', 'draw', [this._cdpId(id), value], { from })
+    return this._msend('tub', 'draw', [this._cdpId(id), value], { from })
   }
 }
 

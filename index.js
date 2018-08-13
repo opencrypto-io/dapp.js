@@ -4,6 +4,7 @@ const providers = require('./lib/providers')
 const debug = require('debug')
 
 class DAppClient {
+
   constructor(config = {}) {
     this._defaultConfig = {
       network: 'mainnet',
@@ -12,7 +13,8 @@ class DAppClient {
         'dai',
         'erc20',
         'ds-value',
-        'custom'
+        'custom',
+        'ens'
       ]
     }
     this._defaultProviderConfig = {
@@ -38,6 +40,7 @@ class DAppClient {
       this._provider.addPrivateKeyAccount(this._config.privateKey)
     }
   }
+
   services() {
     return Object.keys(this._services).map(id => {
       const { name } = this._services[id]
@@ -47,11 +50,13 @@ class DAppClient {
       }
     })
   }
+
   async service(id) {
     return new this._services[id].api(this, this._services[id], await this.assets(id))
   }
+
   async assets(serviceId) {
-    let assets = { abi: {} }
+    const assets = { abi: {} }
     const abiDir = path.join(this._config.servicesDir, serviceId, 'abi')
     if (fs.existsSync(abiDir)) {
       fs.readdirSync(abiDir).forEach(f => {
@@ -60,21 +65,25 @@ class DAppClient {
     }
     return assets
   }
+
   async contract(service, id, opts = {}, localOpts = {}) {
-    let args = {
+    const args = {
       abi: null,
       addr: null
     }
-    if (localOpts.addr) {
-      args.addr = localOpts.addr
-    } else {
-      args.addr = service._index.contracts[this._config.network][id]
+    const defaultProp = (prop) => {
+      switch(prop) {
+        case 'abi':
+          return service._assets.abi[id]
+          break
+        case 'addr':
+          return service._index.contracts[this._config.network][id]
+          break
+      }
     }
-    if (localOpts.abi) {
-      args.abi = localOpts.abi
-    } else {
-      args.abi = service._assets.abi[id]
-    }
+    Object.keys(args).map(prop => {
+      return args[prop] = localOpts[prop] || defaultProp(prop, service)
+    })
     return this._provider.contract(args.abi, args.addr, opts)
   }
 }
