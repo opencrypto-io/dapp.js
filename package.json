@@ -1,15 +1,25 @@
 {
-  "name": "uel",
-  "version": "1.0.0",
-  "description": "",
+  "name": "dapp.js",
+  "version": "0.0.1",
+  "contributors": [
+    "Jan Stránský <tree@opencrypto.io>"
+  ],
+  "description": "Universal Javascript library for interacting with smart-contracts.",
+  "author": "OpenCrypto.io <contact@opencrypto.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/opencrypto-io/dapp.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/opencrypto-io/dapp.js.git"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/test-simple.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "bignumber.js": "^7.2.1",
+    "debug": "^3.1.0",
     "ethers": "^3.0.26",
     "web3": "^1.0.0-beta.35"
   }

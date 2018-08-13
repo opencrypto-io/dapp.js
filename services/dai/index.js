@@ -1,7 +1,7 @@
 const utils = require('../../lib/utils')
 
-const RAY = new utils.BigNumber('1e27')
-const WAD = new utils.BigNumber('1e18')
+const RAY = new utils.BN('1e27')
+const WAD = new utils.BN('1e18')
 
 class Dai {
   constructor(api, index, assets) {
@@ -34,7 +34,7 @@ class Dai {
   }
   async getLiquidationRatio() {
     const value = await this._call('tub', 'mat')
-    return new utils.BigNumber(value.toString()).dividedBy(RAY).toNumber()
+    return new utils.BN(value.toString()).dividedBy(RAY).toNumber()
   }
   async getDebtValue(id) {
     return this._call('tub', 'tab', [this._cdpId(id)])

@@ -1,8 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 const providers = require('./lib/providers')
+const debug = require('debug')
 
-class UELClient {
+class DAppClient {
   constructor(config = {}) {
     this._configDefault = {
       network: 'mainnet',
@@ -10,7 +11,8 @@ class UELClient {
       services: [
         'dai',
         'erc20',
-        'ds-value'
+        'ds-value',
+        'custom'
       ]
     }
     this._defaultProviderConfig = {
@@ -23,6 +25,7 @@ class UELClient {
     }
     this._services = {}
     this._provider = null
+    this._debug = debug
 
     // Load services
     this._config.services.forEach(id => {
@@ -77,6 +80,6 @@ class UELClient {
 }
 
 module.exports = {
-  client: UELClient
+  client: DAppClient
 }
 

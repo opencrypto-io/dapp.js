@@ -1,20 +1,17 @@
-const utils = require('../../lib/utils')
+const Service = require('../../lib/service')
 
-class DSValue {
-  constructor(api, index, assets) {
-    this._api = api
-    this._index = index
-    this._assets = assets
+class DSValue extends Service {
+
+  async set(addr, type = "") {
   }
 
-  async _call(addr, id, method, opts = []) {
-    console.log(addr, id, method)
-    const contract = await this._api.contract(this, id, {}, { addr })
-    return contract.methods[method].apply(null, opts).call()
-  }
+  async get(addr, type = "Hex") {
 
-  async get(addr) {
-    return utils.web3utils.hexToNumberString(await this._call(addr, 'DSValue', 'read'))
+    const value = await this._call(addr, 'DSValue', 'read')
+    if (type === "Hex") {
+      return value
+    }
+    return this._utils['hexTo' + type](value)
   }
 }
 
