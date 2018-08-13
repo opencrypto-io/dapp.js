@@ -11,6 +11,11 @@ class DSValue extends Service {
   }
 }
 
+DSValue.createChild('contract', [
+  'set',
+  'get'
+])
+
 module.exports = {
   name: 'DSValue',
   api: DSValue

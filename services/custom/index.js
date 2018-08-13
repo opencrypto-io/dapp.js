@@ -11,7 +11,7 @@ class SampleContract extends Service {
   }
 }
 
-Service.createChild(SampleContract, 'contract', [
+SampleContract.createChild('contract', [
   'get',
   'set'
 ])

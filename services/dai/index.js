@@ -21,7 +21,7 @@ class Dai extends Service {
   async getCdp(id) {
     return new Cdp(this, id)
   }
-  async createCdp() {
+  async openCdp() {
     return new Cdp(this)
   }
   async getTargetPrice() {
