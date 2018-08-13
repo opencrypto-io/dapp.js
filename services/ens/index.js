@@ -3,17 +3,16 @@ const Service = require('../../lib/service')
 const namehash = require('eth-ens-namehash')
 
 class ENS extends Service {
-
-  _namehash(domain) {
+  _namehash (domain) {
     return namehash.hash(domain)
   }
-  async _resolverHash(hash) {
+  async _resolverHash (hash) {
     return this._mcall('registry', 'resolver', [hash])
   }
-  async resolver(domain) {
+  async resolver (domain) {
     return this._resolverHash(this._namehash(domain))
   }
-  async lookup(domain) {
+  async lookup (domain) {
     const hash = this._namehash(domain)
     const resolver = await this._resolverHash(hash)
     if (resolver === '0x0000000000000000000000000000000000000000') {

@@ -5,7 +5,7 @@ const debug = require('debug')
 
 class DAppClient {
 
-  constructor(config = {}) {
+  constructor (config = {}) {
     this._defaultConfig = {
       network: 'mainnet',
       servicesDir: path.join(__dirname, 'services'),
@@ -13,13 +13,11 @@ class DAppClient {
         'dai',
         'erc20',
         'ds-value',
-        'custom',
         'ens'
       ]
     }
     this._defaultProviderConfig = {
-      type: 'web3/infura',
-      apiKey: '3adefb225509451f87d745e281e2e165'
+      type: 'web3/infura'
     }
     this._config = Object.assign(this._defaultConfig, config)
     if (!this._config.provider) {
@@ -31,7 +29,11 @@ class DAppClient {
 
     // Load services
     this._config.services.forEach(id => {
-      this._services[id] = require(path.join(this._config.servicesDir, id, 'index'))
+      const servicePath = path.join(this._config.servicesDir, id)
+      this._services[id] = {
+        path: servicePath,
+        pkg: require(servicePath)
+      }
     })
     // Load provider
     this._provider = new providers[this._config.provider.type](this)
@@ -41,23 +43,31 @@ class DAppClient {
     }
   }
 
-  services() {
+  services () {
     return Object.keys(this._services).map(id => {
-      const { name } = this._services[id]
+      const s = this._services[id]
       return {
         id,
-        name
+        path: s.path,
+        name: s.pkg.name
       }
     })
   }
 
-  async service(id) {
-    return new this._services[id].api(this, this._services[id], await this.assets(id))
+  addService (name, path) {
+    this._services[name] = {
+      path,
+      pkg: require(path)
+    }
   }
 
-  async assets(serviceId) {
+  async service (id) {
+    return new this._services[id].pkg.api(this, this._services[id], await this.assets(id))
+  }
+
+  async assets (serviceId) {
     const assets = { abi: {} }
-    const abiDir = path.join(this._config.servicesDir, serviceId, 'abi')
+    const abiDir = path.join(this._services[serviceId].path, 'abi')
     if (fs.existsSync(abiDir)) {
       fs.readdirSync(abiDir).forEach(f => {
         assets.abi[path.parse(f).name] = JSON.parse(fs.readFileSync(path.join(abiDir, f)))
@@ -66,23 +76,21 @@ class DAppClient {
     return assets
   }
 
-  async contract(service, id, opts = {}, localOpts = {}) {
+  async contract (service, id, opts = {}, localOpts = {}) {
     const args = {
       abi: null,
       addr: null
     }
     const defaultProp = (prop) => {
-      switch(prop) {
+      switch (prop) {
         case 'abi':
           return service._assets.abi[id]
-          break
         case 'addr':
           return service._index.contracts[this._config.network][id]
-          break
       }
     }
-    Object.keys(args).map(prop => {
-      return args[prop] = localOpts[prop] || defaultProp(prop, service)
+    Object.keys(args).forEach(prop => {
+      args[prop] = localOpts[prop] || defaultProp(prop, service)
     })
     return this._provider.contract(args.abi, args.addr, opts)
   }
@@ -91,4 +99,3 @@ class DAppClient {
 module.exports = {
   client: DAppClient
 }
-

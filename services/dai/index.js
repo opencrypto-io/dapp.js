@@ -4,39 +4,38 @@ const RAY = new Service.utils.BN('1e27')
 const WAD = new Service.utils.BN('1e18')
 
 class Dai extends Service {
-
-  _cdpId(id) {
+  _cdpId (id) {
     return this._utils.numberToBytes32(id)
   }
-  async getCdp(id) {
+  async getCdp (id) {
     return new Cdp(this, id)
   }
-  async openCdp() {
+  async openCdp () {
     return new Cdp(this)
   }
-  async getTargetPrice() {
+  async getTargetPrice () {
     return this._mcall('vox', 'par')
   }
-  async getLiquidationRatio() {
+  async getLiquidationRatio () {
     const value = await this._mcall('tub', 'mat')
-    return new utils.BN(value.toString()).dividedBy(RAY).toNumber()
+    return new this._utils.BN(value.toString()).dividedBy(RAY).toNumber()
   }
-  async getDebtValue(id) {
+  async getDebtValue (id) {
     return this._mcall('tub', 'tab', [this._cdpId(id)])
   }
-  async getCollateralValue(id) {
+  async getCollateralValue (id) {
     return this._mcall('tub', 'ink', [this._cdpId(id)])
   }
-  async getInfo(id) {
+  async getInfo (id) {
     return this._mcall('tub', 'cups', [this._cdpId(id)])
   }
-  async draw(id, value, from) {
+  async draw (id, value, from) {
     return this._msend('tub', 'draw', [this._cdpId(id), value], { from })
   }
 }
 
 class Cdp {
-  constructor(dai, id = null) {
+  constructor (dai, id = null) {
     this._parent = dai
 
     if (id === null) {
@@ -45,7 +44,7 @@ class Cdp {
       this.id = Promise.resolve(id)
     }
   }
-  async getId() {
+  async getId () {
     return this.id
   }
 }

@@ -1,7 +1,5 @@
 
-
-async function testDai() {
-
+async function testDai () {
   const DApp = require('..')
   const client = new DApp.client()
 
@@ -9,8 +7,6 @@ async function testDai() {
   const cdp = await dai.getCdp(2715)
 
   console.log('Current debt of CDP 2715:', await cdp.getDebtValue())
-
 }
 
 testDai()
-

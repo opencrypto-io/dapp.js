@@ -8,7 +8,7 @@ const client = new UEL.client({
   }
 })
 
-async function test() {
+async function test () {
   console.log('Available services: ', JSON.stringify(client.services(), null, 2))
 
   const dai = await client.service('dai')
@@ -22,7 +22,7 @@ async function test() {
   console.log('cdp id:', await cdp.getId())
   console.log('debt value:', await cdp.getDebtValue())
   console.log('collateral value:', await cdp.getCollateralValue())
-  //console.log('draw:', await cdp.draw(1000000000000000, '0x971960f103d1098AF94Dc318D494BF6F472D8712'))
+  // console.log('draw:', await cdp.draw(1000000000000000, '0x971960f103d1098AF94Dc318D494BF6F472D8712'))
 }
 
 test()

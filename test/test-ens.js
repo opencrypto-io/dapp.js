@@ -1,5 +1,5 @@
 
-async function test() {
+async function test () {
   const DApp = require('..')
   const client = new DApp.client()
 
@@ -7,4 +7,3 @@ async function test() {
   console.log('resolved address:', await ens.lookup('tree.opencrypto.eth'))
 }
 test()
-
