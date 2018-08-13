@@ -19,6 +19,11 @@ async function test() {
   //console.log('set value:', await sample.set('0x7655107fE6fD3347E220fB2445a7f00747333b84', 1234567890, '0xc840493fb3835a26de50c10D65d6556F2177b934'))
 
   console.log('value:', await sample.get('0x7655107fE6fD3347E220fB2445a7f00747333b84'))
+
+  const contract = await sample.contract('0x7655107fE6fD3347E220fB2445a7f00747333b84')
+  console.log('value:', await contract.get())
+  console.log('value:', await contract.getId())
+
 }
 
 test()

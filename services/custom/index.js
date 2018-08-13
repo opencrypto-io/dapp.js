@@ -11,6 +11,11 @@ class SampleContract extends Service {
   }
 }
 
+Service.createChild(SampleContract, 'contract', [
+  'get',
+  'set'
+])
+
 module.exports = {
   name: 'Sample Contract',
   api: SampleContract

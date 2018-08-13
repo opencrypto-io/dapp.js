@@ -5,7 +5,7 @@ const debug = require('debug')
 
 class DAppClient {
   constructor(config = {}) {
-    this._configDefault = {
+    this._defaultConfig = {
       network: 'mainnet',
       servicesDir: path.join(__dirname, 'services'),
       services: [
@@ -19,7 +19,7 @@ class DAppClient {
       type: 'web3/infura',
       apiKey: '3adefb225509451f87d745e281e2e165'
     }
-    this._config = Object.assign(this._configDefault, config)
+    this._config = Object.assign(this._defaultConfig, config)
     if (!this._config.provider) {
       this._config.provider = this._defaultProviderConfig
     }

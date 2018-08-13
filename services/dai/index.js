@@ -1,17 +1,12 @@
-const utils = require('../../lib/utils')
+const Service = require('../../lib/service')
 
-const RAY = new utils.BN('1e27')
-const WAD = new utils.BN('1e18')
+const RAY = new Service.utils.BN('1e27')
+const WAD = new Service.utils.BN('1e18')
 
-class Dai {
-  constructor(api, index, assets) {
-    this._api = api
-    this._assets = assets
-    this._index = index
-    this._cdp = Cdp
-  }
+class Dai extends Service {
+
   _cdpId(id) {
-    return utils.numberToBytes32(id)
+    return this._utils.numberToBytes32(id)
   }
   async _call(id, method, opts = []) {
     const contract = await this._api.contract(this, id)
@@ -24,10 +19,10 @@ class Dai {
     return tx.send(sendOpts)
   }
   async getCdp(id) {
-    return new this._cdp(this, id)
+    return new Cdp(this, id)
   }
   async createCdp() {
-    return new this._cdp(this)
+    return new Cdp(this)
   }
   async getTargetPrice() {
     return this._call('vox', 'par')
@@ -65,7 +60,7 @@ class Cdp {
   }
 }
 
-utils.passthroughExpand(Cdp, 'getId', [
+Service.utils.passthroughExpand(Cdp, 'getId', [
   'getDebtValue',
   'getCollateralValue',
   'getInfo',
