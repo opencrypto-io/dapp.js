@@ -23,8 +23,10 @@ class DAppClient {
     }
     this._config = Object.assign(this._defaultConfig, config)
     if (!this._config.provider) {
-      this._config.provider = this._defaultProviderConfig
+      this._config.provider = {}
     }
+    this._config.provider = Object.assign(this._defaultProviderConfig, this._config.provider)
+
     this._services = {}
     this._provider = null
     this._eventHandlers = {}
@@ -61,15 +63,16 @@ class DAppClient {
     return Promise.resolve(this._services[id])
   }
 
-  services () {
-    return Object.keys(this._services).map(id => {
+  getServices () {
+    const out = {}
+    Object.keys(this._services).map(id => {
       const s = this._services[id]
-      return {
-        id,
+      out[id] = {
         path: s.path,
         name: s.pkg.name
       }
     })
+    return out
   }
 
   async service (id) {
@@ -122,9 +125,9 @@ class DAppClient {
       })
   }
 
-  async send (addr, id, method, opts = [], sendOpts = {}) {
+  async send (service, addr, id, method, opts = [], sendOpts = {}) {
     this._debug('api.send')(JSON.stringify({ addr, id, method, opts, sendOpts }))
-    const contract = await this._api.contract(this, id, {}, { addr })
+    const contract = await this.contract(service, id, {}, { addr })
     return this._provider.send(contract, method, opts, sendOpts)
   }
 
