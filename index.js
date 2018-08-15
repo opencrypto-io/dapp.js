@@ -1,7 +1,9 @@
 const fs = require('fs')
 const path = require('path')
-const providers = require('./lib/providers')
 const debug = require('debug')
+
+const providers = require('./lib/providers')
+const Service = require('./lib/service')
 
 class DAppClient {
 
@@ -90,6 +92,7 @@ class DAppClient {
   }
 
   async contract (service, id, opts = {}, localOpts = {}) {
+    //this._debug('Contract')(service, id, opts, localOpts)
     const args = {
       abi: null,
       addr: null
@@ -105,7 +108,24 @@ class DAppClient {
     Object.keys(args).forEach(prop => {
       args[prop] = localOpts[prop] || defaultProp(prop, service)
     })
+    this._debug('api.contract')('abi keys = ' + args.abi.length, ' addr = ' + args.addr, 'opts = ' + JSON.stringify(opts))
     return this._provider.contract(args.abi, args.addr, opts)
+  }
+
+  async call (service, addr, id, method, opts = []) {
+    this._debug('api.call')(JSON.stringify({ addr, id, method, opts }))
+    const contract = await this.contract(service, id, {}, { addr })
+    return this._provider.call(contract, method, opts)
+      .catch(err => {
+        this._debug(err)
+        return null
+      })
+  }
+
+  async send (addr, id, method, opts = [], sendOpts = {}) {
+    this._debug('api.send')(JSON.stringify({ addr, id, method, opts, sendOpts }))
+    const contract = await this._api.contract(this, id, {}, { addr })
+    return this._provider.send(contract, method, opts, sendOpts)
   }
 
   async emit (eventName) {
@@ -143,5 +163,6 @@ class DAppClient {
 }
 
 module.exports = {
-  client: DAppClient
+  client: DAppClient,
+  service: Service
 }

@@ -1,5 +1,5 @@
 
-const Service = require('../../lib/service')
+const Service = require('../..').service
 const namehash = require('eth-ens-namehash')
 
 class ENS extends Service {
@@ -14,7 +14,9 @@ class ENS extends Service {
   }
   async lookup (domain) {
     const hash = this._namehash(domain)
+    this._debug('Resolver hash:', hash)
     const resolver = await this._resolverHash(hash)
+    this._debug('Current resolver:', resolver)
     if (resolver === '0x0000000000000000000000000000000000000000') {
       return null
     }
