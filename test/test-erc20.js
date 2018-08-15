@@ -1,7 +1,11 @@
 
 async function test () {
   const DApp = require('..')
-  const client = new DApp.client()
+  const client = new DApp.client({
+    provider: {
+      type: "ethjs/infura"
+    }
+  })
   const erc = await client.service('erc20')
 
   const token = erc.token('0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2')
