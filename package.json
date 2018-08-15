@@ -18,7 +18,11 @@
   "scripts": {
     "test": "node test/test-simple.js"
   },
+  "bin": {
+    "dapp-cli": "./bin/dapp-cli.js"
+  },
   "dependencies": {
+    "commander": "^2.17.1",
     "debug": "^3.1.0",
     "eth-ens-namehash": "^2.0.8",
     "ethers": "^3.0.26",
