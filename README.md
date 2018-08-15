@@ -35,6 +35,11 @@ client.service('ds-value').then(service => {
 })
 ```
 
+
+## CLI (command-line interface)
+
+Please read [cli/README.md](cli/README.md) for more informations.
+
 ## License
 MIT
 

@@ -3,6 +3,7 @@
 const program = require('commander')
 const fs = require('fs')
 const path = require('path')
+const debug = require('debug')
 
 const DApp = require('..')
 
@@ -12,6 +13,7 @@ program
   .option('-n, --network <name>', 'Use specified network')
   .option('-u, --provider-url <address>', 'Use specified url for provider')
   .option('-k, --private-key <string>', 'Use private key')
+  .option('--debug [scope]', 'Turn on debug mode')
 
 function err(msg) {
   console.error(msg)
@@ -30,6 +32,11 @@ async function cli(app) {
    
   const opts = {
     provider: {}
+  }
+
+  if (app.debug) {
+    console.log(app.debug)
+    opts.debug = app.debug === true ? '*' : app.debug
   }
 
   if (app.network) {

@@ -19,7 +19,7 @@
     "test": "node test/test-simple.js"
   },
   "bin": {
-    "dapp-cli": "./bin/dapp-cli.js"
+    "dapp-cli": "./cli/dapp-cli.js"
   },
   "dependencies": {
     "commander": "^2.17.1",

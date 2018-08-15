@@ -16,7 +16,8 @@ class DAppClient {
         'erc20',
         'ds-value',
         'ens'
-      ]
+      ],
+      debug: false
     }
     this._defaultProviderConfig = {
       type: 'web3/infura'
@@ -31,6 +32,13 @@ class DAppClient {
     this._provider = null
     this._eventHandlers = {}
     this._debug = debug
+    this._debugPrefix = 'dappjs:'
+
+    // End of variable & config initialization
+
+    if (this._config.debug) {
+      this.enableDebug(this._config.debug)
+    }
 
     // Load provider
     this._provider = new providers[this._config.provider.type](this)
@@ -51,12 +59,13 @@ class DAppClient {
       return this.addService(id, servicePath)
     }))
     .then(() => {
-      return this.emit('servicesLoaded')
+      return this.emit('servicesLoaded', this.getServices())
     })
   }
 
   async addService (id, path) {
     this._services[id] = {
+      id,
       path,
       pkg: require(path)
     }
@@ -77,6 +86,7 @@ class DAppClient {
 
   async service (id) {
     await this.once('servicesLoaded')
+    this.debug('core:service', 'service=%s', id)
     if (!this._services[id].instance) {
       this._services[id].instance = new this._services[id].pkg.api(this, this._services[id], await this.assets(id))
     }
@@ -111,12 +121,12 @@ class DAppClient {
     Object.keys(args).forEach(prop => {
       args[prop] = localOpts[prop] || defaultProp(prop, service)
     })
-    this._debug('api.contract')('abi keys = ' + args.abi.length, ' addr = ' + args.addr, 'opts = ' + JSON.stringify(opts))
+    this.debug('core:contract', 'service=%s, abi=%s, addr=%s, opts=%s', service._index.id, id, args.addr, JSON.stringify(opts))
     return this._provider.contract(args.abi, args.addr, opts)
   }
 
   async call (service, addr, id, method, opts = []) {
-    this._debug('api.call')(JSON.stringify({ addr, id, method, opts }))
+    this.debug('core:call', 'service=%s, method=%s, addr=%s, opts=%s', service._index.id, method, addr, JSON.stringify(opts))
     const contract = await this.contract(service, id, {}, { addr })
     return this._provider.call(contract, method, opts)
       .catch(err => {
@@ -126,15 +136,15 @@ class DAppClient {
   }
 
   async send (service, addr, id, method, opts = [], sendOpts = {}) {
-    this._debug('api.send')(JSON.stringify({ addr, id, method, opts, sendOpts }))
+    this.debug('core:send', JSON.stringify({ addr, id, method, opts, sendOpts }))
     const contract = await this.contract(service, id, {}, { addr })
     return this._provider.send(contract, method, opts, sendOpts)
   }
 
-  async emit (eventName) {
-    this._debug('Events')('Event emitted: ' + eventName)
+  async emit (eventName, res) {
+    this.debug('events:' + eventName, 'Emmited: %s', JSON.stringify(res, null, 2))
     if (!this._eventHandlers[eventName]) {
-      return Promise.resolve()
+      return Promise.resolve(res)
     }
     return Promise.all(this._eventHandlers[eventName].map(fn => fn()))
   }
@@ -163,6 +173,14 @@ class DAppClient {
     return this.on(eventName, fn, true)
   }
 
+  enableDebug (scope) {
+    this._debug.enable(scope === true ? '*' : scope)
+    this.debug('core', 'Debug mode enabled')
+  }
+
+  debug (scope, ...args) {
+    this._debug(this._debugPrefix + scope)(...args)
+  }
 }
 
 module.exports = {
