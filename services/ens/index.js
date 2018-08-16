@@ -2,6 +2,8 @@
 const Service = require('../..').service
 const namehash = require('eth-ens-namehash')
 
+const emptyResolver = '0x0000000000000000000000000000000000000000'
+
 class ENS extends Service {
   _namehash (domain) {
     return namehash.hash(domain)
@@ -17,10 +19,24 @@ class ENS extends Service {
     this.$debug('Resolver hash:', hash)
     const resolver = await this._resolverHash(hash)
     this.$debug('Current resolver:', resolver)
-    if (resolver === '0x0000000000000000000000000000000000000000') {
+    if (resolver === emptyResolver) {
       return null
     }
     return this.$call(resolver, 'resolver', 'addr', [hash])
+  }
+  async reverse (addr) {
+    if (addr.startsWith('0x')) {
+      addr = addr.slice(2)
+    }
+    const name = addr.toLowerCase() + '.addr.reverse'
+    const hash = this._namehash(name)
+    this.$debug('Reverse name: %s, hash=%s', name, hash)
+    const resolver = await this.resolver(name)
+    if (resolver === emptyResolver) {
+      return null
+    }
+    this.$debug('Current resolver: %s', resolver)
+    return this.$call(resolver, 'resolver', 'name', [hash])
   }
 }
 
