@@ -6,7 +6,7 @@ class DSValue extends Service {
 
   async get (addr, type = 'Hex') {
     const value = await this.$call(addr, 'DSValue', 'read')
-    return this._utils.formatHex(value, type)
+    return this.$utils.formatHex(value, type)
   }
 }
 

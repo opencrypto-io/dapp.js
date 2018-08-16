@@ -5,7 +5,7 @@ const WAD = new Service.utils.BN('1e18')
 
 class Dai extends Service {
   _cdpId (id) {
-    return this._utils.numberToBytes32(id)
+    return this.$utils.numberToBytes32(id)
   }
   async getCdp (id) {
     return new Cdp(this, id)
@@ -18,7 +18,7 @@ class Dai extends Service {
   }
   async getLiquidationRatio () {
     const value = await this.$mcall('tub', 'mat')
-    return new this._utils.BN(value.toString()).dividedBy(RAY).toNumber()
+    return new this.$utils.BN(value.toString()).dividedBy(RAY).toNumber()
   }
   async getDebtValue (id) {
     return this.$mcall('tub', 'tab', [this._cdpId(id)])
