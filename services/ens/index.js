@@ -11,32 +11,29 @@ class ENS extends Service {
   async _resolverHash (hash) {
     return this.$mcall('registry', 'resolver', [hash])
   }
-  async resolver (domain) {
-    return this._resolverHash(this._namehash(domain))
-  }
-  async lookup (domain) {
-    const hash = this._namehash(domain)
-    this.$debug('Resolver hash:', hash)
+  async _resolveName (name, method = 'addr') {
+    const hash = this._namehash(name)
+    this.$debug('Resolve name: %s type=%s hash=%s', name, method, hash)
     const resolver = await this._resolverHash(hash)
     this.$debug('Current resolver:', resolver)
     if (resolver === emptyResolver) {
       return null
     }
-    return this.$call(resolver, 'resolver', 'addr', [hash])
+    return this.$call(resolver, 'resolver', method, [hash])
+  }
+  async resolver (domain) {
+    return this._resolverHash(this._namehash(domain))
+  }
+  async lookup (domain) {
+    return this._resolveName(domain, 'addr')
   }
   async reverse (addr) {
     if (addr.startsWith('0x')) {
       addr = addr.slice(2)
     }
     const name = addr.toLowerCase() + '.addr.reverse'
-    const hash = this._namehash(name)
-    this.$debug('Reverse name: %s, hash=%s', name, hash)
-    const resolver = await this.resolver(name)
-    if (resolver === emptyResolver) {
-      return null
-    }
-    this.$debug('Current resolver: %s', resolver)
-    return this.$call(resolver, 'resolver', 'name', [hash])
+    this.$debug('Reverse lookup: %s', name)
+    return this._resolveName(name, 'name')
   }
 }
 
