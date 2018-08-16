@@ -47,7 +47,7 @@ class DAppClient {
     // Load selected provider
     const [ providerName, providerSubType ] = this._config.provider.type.split('/')
     this.debug('core', 'Loading provider: %s', providerName)
-    const provider = require('./providers/'+providerName)
+    const provider = require('./lib/providers/'+providerName)
     this._provider = new provider[providerSubType](this)
 
     // Load services
