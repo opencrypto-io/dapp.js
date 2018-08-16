@@ -18,6 +18,10 @@ dapp-cli [options] <service> <method> [args ...]
 
 A few simple examples:
 ```bash
+### List available services
+dapp-cli -l
+#>> Services: ...
+
 ### Resolve address for ENS domain name
 dapp-cli ens lookup apt-get.eth
 #>> 0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb
@@ -26,6 +30,10 @@ dapp-cli ens lookup apt-get.eth
 ### In this example, target is ETH/USD price feed managed by MakerDAO
 dapp-cli ds-value get 0x729d19f657bd0614b4985cf1d82531c67569197b NumberString
 #>> 285800000000000000000
+
+### Get ERC-20 token symbol on "Kovan" test network
+dapp-cli -n kovan erc20 getSymbol 0xc4375b7de8af5a38a93548eb8453a498222c4ff2
+#>> DAI
 ```
 
 ## Options
