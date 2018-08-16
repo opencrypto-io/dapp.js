@@ -8,10 +8,10 @@ const Service = require('./lib/service')
 
 const coreServices = [
   'eth',
-  'dai',
   'erc20',
   'ds-value',
-  'ens'
+  'ens',
+  'dai'
 ]
 
 class DAppClient {

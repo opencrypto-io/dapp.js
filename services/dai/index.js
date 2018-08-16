@@ -1,33 +1,58 @@
 const Service = require('../../lib/service')
 
-const RAY = new Service.utils.BN('1e27')
-const WAD = new Service.utils.BN('1e18')
+const RAY = new Service.utils.BigNumber('1e27')
+const WAD = new Service.utils.BigNumber('1e18')
+
+const DAI = new Service.utils.createCurrency('DAI')
+const PETH = new Service.utils.createCurrency('PETH')
 
 class Dai extends Service {
   _cdpId (id) {
     return this.$utils.numberToBytes32(id)
   }
-  async getCdp (id) {
-    return new Cdp(this, id)
-  }
-  async openCdp () {
-    return new Cdp(this)
-  }
-  async getTargetPrice () {
+  // Get Target price
+  async targetPrice () {
     return this.$mcall('vox', 'par')
   }
-  async getLiquidationRatio () {
+  // Get Liquidation ratio
+  async liquidationRatio () {
     const value = await this.$mcall('tub', 'mat')
-    return new this.$utils.BN(value.toString()).dividedBy(RAY).toNumber()
+    return new this.$utils.BigNumber(value.toString()).dividedBy(RAY).toNumber()
   }
-  async getDebtValue (id) {
-    return this.$mcall('tub', 'tab', [this._cdpId(id)])
+  // Get WETH-PETH ratio
+  async wethPethRatio () {
+    const value = await this.$mcall('tub', 'per')
+    return new this.$utils.BigNumber(value.toString()).dividedBy(RAY).toNumber()
   }
-  async getCollateralValue (id) {
-    return this.$mcall('tub', 'ink', [this._cdpId(id)])
+  // Get debt value
+  async debt (id) {
+    const value = await this.$mcall('tub', 'tab', [this._cdpId(id)])
+    return DAI.wei(value)
+  }
+  // Get collateral value
+  async collateral (id) {
+    const value = await this.$mcall('tub', 'ink', [this._cdpId(id)])
+    return PETH.wei(value)
+  }
+  // Get Liquidation price
+  async liquidationPrice (id) {
+    const [debt, liqRatio, collateral] = await Promise.all([
+      this.debt(id),
+      this.liquidationRatio(),
+      this.collateral(id)
+    ])
+    return debt.toBigNumber().times(liqRatio).div(collateral.toBigNumber())
+  }
+  async cdp (id) {
+    return new Cdp(this, id)
+  }
+  async openCdp (from) {
+    return this.$msend('tub', 'open', [], { from })
   }
   async getInfo (id) {
     return this.$mcall('tub', 'cups', [this._cdpId(id)])
+  }
+  async lock (id, value, from) {
   }
   async draw (id, value, from) {
     return this.$msend('tub', 'draw', [this._cdpId(id), value], { from })
@@ -44,6 +69,10 @@ class Cdp {
       this.id = Promise.resolve(id)
     }
   }
+  async _newCdp () {
+    console.log('creating cdp ..')
+    return { ok: true }
+  }
   async getId () {
     return this.id
   }
@@ -57,7 +86,7 @@ Service.utils.passthroughExpand(Cdp, 'getId', [
 ])
 
 module.exports = {
-  name: 'Dai (MakerDAO)',
+  name: 'Dai Stablecoin System',
   contracts: {
     mainnet: {
       tub: '0x448a5065aebb8e423f0896e6c5d525c040f59af3',

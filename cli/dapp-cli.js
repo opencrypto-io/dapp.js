@@ -8,6 +8,8 @@ const debug = require('debug')
 const DApp = require('..')
 const pkg = require('../package')
 
+const coreServices = DApp.coreServices
+
 program
   .usage('[options] <service> <method> [args ...]')
   .option('-p, --provider <type>', 'use specified provider')
@@ -29,7 +31,7 @@ async function cli(app) {
     process.stdout.write(`Services:\n`)
     const client = new DApp.client()
     const services = client.getServices()
-    Object.keys(services).forEach(sId => {
+    coreServices.forEach(sId => {
       process.stdout.write(`  [${sId}] ${services[sId].name}\n`)
     })
     process.exit(0)
@@ -56,8 +58,7 @@ async function cli(app) {
     opts.privateKey = app.privateKey
   }
 
-  const allServices = DApp.coreServices
-  if (allServices.indexOf(app.args[0]) !== -1) {
+  if (coreServices.indexOf(app.args[0]) !== -1) {
     opts.services = [ app.args[0] ]
   } else {
     opts.services = []
@@ -72,7 +73,7 @@ async function cli(app) {
     process.exit(0)
   }
 
-  if (allServices.indexOf(app.args[0]) === -1 && app.args[0] !== undefined) {
+  if (coreServices.indexOf(app.args[0]) === -1 && app.args[0] !== undefined) {
     const fn = path.join(process.cwd(), app.args[0])
     if (fs.existsSync(fn)) {
       client.addService('custom', fn)
@@ -93,12 +94,15 @@ async function cli(app) {
   }
 
   const result = await service[app.args[1]].apply(service, app.args.slice(2))
-
+  let output = result
   if (result !== null && typeof result === 'object') {
-    process.stdout.write(JSON.stringify(result, null, 2) + "\n")
-  } else {
-    process.stdout.write(result + "\n")
+    if (result.toString && result.toString() !== '[object Object]') {
+      output = result.toString()
+    } else {
+      output = JSON.stringify(result, null, 2)
+    }
   }
+  process.stdout.write(output + '\n')
 }
 
 cli(program.parse(process.argv))
