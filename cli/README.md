@@ -43,11 +43,12 @@ dapp-cli -n kovan erc20 getSymbol 0xc4375b7de8af5a38a93548eb8453a498222c4ff2
 
   Options:
 
-    -p, --provider <type>         Use specified provider
-    -n, --network <name>          Use specified network
-    -u, --provider-url <address>  Use specified url for provider
-    -k, --private-key <string>    Use private key
-    -l, --list-services           List available services
+    -p, --provider <type>         use specified provider
+    -n, --network <name>          use specified network
+    -u, --provider-url <address>  use specified url for provider
+    -k, --private-key <string>    use private key
+    -l, --list-services           list available services
     --debug [scope]               Turn on debug mode
+    -v, --version                 output the version number
     -h, --help                    output usage information
 ```

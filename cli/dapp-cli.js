@@ -6,15 +6,17 @@ const path = require('path')
 const debug = require('debug')
 
 const DApp = require('..')
+const pkg = require('../package')
 
 program
   .usage('[options] <service> <method> [args ...]')
-  .option('-p, --provider <type>', 'Use specified provider')
-  .option('-n, --network <name>', 'Use specified network')
-  .option('-u, --provider-url <address>', 'Use specified url for provider')
-  .option('-k, --private-key <string>', 'Use private key')
-  .option('-l, --list-services', 'List available services')
+  .option('-p, --provider <type>', 'use specified provider')
+  .option('-n, --network <name>', 'use specified network')
+  .option('-u, --provider-url <address>', 'use specified url for provider')
+  .option('-k, --private-key <string>', 'use private key')
+  .option('-l, --list-services', 'list available services')
   .option('--debug [scope]', 'Turn on debug mode')
+  .version(pkg.version, '-v, --version')
 
 function err(msg) {
   console.error(msg)
@@ -22,7 +24,7 @@ function err(msg) {
 }
 
 async function cli(app) {
-   
+
   const opts = {
     provider: {}
   }
