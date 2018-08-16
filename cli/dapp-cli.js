@@ -8,11 +8,12 @@ const debug = require('debug')
 const DApp = require('..')
 
 program
-  .usage('[options] <service> <method> <args ...>')
+  .usage('[options] <service> <method> [args ...]')
   .option('-p, --provider <type>', 'Use specified provider')
   .option('-n, --network <name>', 'Use specified network')
   .option('-u, --provider-url <address>', 'Use specified url for provider')
   .option('-k, --private-key <string>', 'Use private key')
+  .option('-l, --list-services', 'List available services')
   .option('--debug [scope]', 'Turn on debug mode')
 
 function err(msg) {
@@ -21,14 +22,6 @@ function err(msg) {
 }
 
 async function cli(app) {
-
-  if (!app.args[0]) {
-    err('Please specify service')
-  }
-
-  if (!app.args[1]) {
-    err('Please specify method')
-  }
    
   const opts = {
     provider: {}
@@ -38,7 +31,6 @@ async function cli(app) {
     console.log(app.debug)
     opts.debug = app.debug === true ? '*' : app.debug
   }
-
   if (app.network) {
     opts.network = app.network
   }
@@ -53,21 +45,40 @@ async function cli(app) {
   }
 
   const client = new DApp.client(opts)
-  const services = client.getServices()
+  var services = client.getServices()
 
-  if (!services[app.args[0]]) {
+  if (app.args[0] === undefined && !app.listServices) {
+    app.outputHelp()
+    process.exit(0)
+  }
+
+  if (!services[app.args[0]] && app.args[0] !== undefined) {
     const fn = path.join(process.cwd(), app.args[0])
     if (fs.existsSync(fn)) {
       client.addService('custom', fn)
       app.args[0] = 'custom'
+      var services = client.getServices()
     } else {
       err('Service not found: ' + app.args[0])
     }
   }
 
-  const service = await client.service(app.args[0])
+  if (app.listServices) {
+    process.stdout.write(`Services:\n`)
+    Object.keys(services).forEach(sId => {
+      process.stdout.write(`  [${sId}] ${services[sId].name}\n`)
+    })
+    process.exit(0)
+  }
 
-  process.stdout.write(await service[app.args[1]].apply(service, app.args.slice(2)) + "\n")
+  if (!app.args[1]) {
+    err('Please specify method')
+  }
+
+  const service = await client.service(app.args[0])
+  const result = await service[app.args[1]].apply(service, app.args.slice(2))
+
+  process.stdout.write(result + "\n")
   
 }
 

@@ -13,7 +13,7 @@ npm install -g opencrypto-io/dapp.js
 And you can use it out-of-the-box by command `dapp-cli`: 
 
 ```
-dapp-cli [options] <service> <method> <args ...>
+dapp-cli [options] <service> <method> [args ...]
 ```
 
 A few simple examples:
@@ -31,7 +31,7 @@ dapp-cli ds-value get 0x729d19f657bd0614b4985cf1d82531c67569197b NumberString
 ## Options
 
 ```
-  Usage: dapp-cli [options] <service> <method> <args ...>
+  Usage: dapp-cli [options] <service> <method> [args ...]
 
   Options:
 
@@ -39,6 +39,7 @@ dapp-cli ds-value get 0x729d19f657bd0614b4985cf1d82531c67569197b NumberString
     -n, --network <name>          Use specified network
     -u, --provider-url <address>  Use specified url for provider
     -k, --private-key <string>    Use private key
+    -l, --list-services           List available services
     --debug [scope]               Turn on debug mode
     -h, --help                    output usage information
 ```
