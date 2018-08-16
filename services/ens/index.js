@@ -11,15 +11,20 @@ class ENS extends Service {
   async _resolverHash (hash) {
     return this.$mcall('registry', 'resolver', [hash])
   }
-  async _resolveName (name, method = 'addr') {
+  async _resolveName (name, method = 'addr', resolver = null) {
     const hash = this._namehash(name)
     this.$debug('Resolve name: %s type=%s hash=%s', name, method, hash)
-    const resolver = await this._resolverHash(hash)
+    if (!resolver) {
+      resolver = await this._resolverHash(hash)
+    }
     this.$debug('Current resolver:', resolver)
     if (resolver === emptyResolver) {
       return null
     }
     return this.$call(resolver, 'resolver', method, [hash])
+  }
+  async owner (domain) {
+    return this.$mcall('registry', 'owner', [this._namehash(domain)])
   }
   async resolver (domain) {
     return this._resolverHash(this._namehash(domain))
@@ -34,6 +39,14 @@ class ENS extends Service {
     const name = addr.toLowerCase() + '.addr.reverse'
     this.$debug('Reverse lookup: %s', name)
     return this._resolveName(name, 'name')
+  }
+  async info (domain) {
+    const resolver = await this.resolver(domain)
+    const [ owner, addr ] = await Promise.all([
+      this.owner(domain),
+      this._resolveName(name, 'addr', resolver)
+    ])
+    return { owner, resolver, addr }
   }
 }
 
