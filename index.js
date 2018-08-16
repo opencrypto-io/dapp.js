@@ -2,8 +2,17 @@ const fs = require('fs')
 const path = require('path')
 const debug = require('debug')
 
-const providers = require('./lib/providers')
+//const providers = require('./lib/providers')
+const Provider = require('./lib/provider')
 const Service = require('./lib/service')
+
+const coreServices = [
+  'eth',
+  'dai',
+  'erc20',
+  'ds-value',
+  'ens'
+]
 
 class DAppClient {
 
@@ -11,13 +20,7 @@ class DAppClient {
     this._defaultConfig = {
       network: 'mainnet',
       servicesDir: path.join(__dirname, 'services'),
-      services: [
-        'eth',
-        'dai',
-        'erc20',
-        'ds-value',
-        'ens'
-      ],
+      services: coreServices,
       debug: false
     }
     this._defaultProviderConfig = {
@@ -41,8 +44,12 @@ class DAppClient {
       this.enableDebug(this._config.debug)
     }
 
-    // Load provider
-    this._provider = new providers[this._config.provider.type](this)
+    // Load selected provider
+    const [ providerName, providerSubType ] = this._config.provider.type.split('/')
+    this.debug('core', 'Loading provider: %s', providerName)
+    const provider = require('./providers/'+providerName)
+    this._provider = new provider[providerSubType](this)
+
     // Load services
     this.addServices(this._config.servicesDir, this._config.services)
     // Load account
@@ -184,9 +191,15 @@ class DAppClient {
   debug (scope, ...args) {
     this._debug(this._debugPrefix + scope)(...args)
   }
+
+  allServices () {
+    return this._defaultConfig.services
+  }
 }
 
 module.exports = {
   client: DAppClient,
-  service: Service
+  service: Service,
+  provider: Provider,
+  coreServices
 }

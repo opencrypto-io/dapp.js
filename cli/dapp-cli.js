@@ -25,12 +25,23 @@ function err(msg) {
 
 async function cli(app) {
 
+  if (app.listServices) {
+    process.stdout.write(`Services:\n`)
+    const client = new DApp.client()
+    const services = client.getServices()
+    Object.keys(services).forEach(sId => {
+      process.stdout.write(`  [${sId}] ${services[sId].name}\n`)
+    })
+    process.exit(0)
+  }
+
   const opts = {
     provider: {}
   }
 
   if (app.debug) {
     opts.debug = app.debug === true ? '*' : app.debug
+    debug.enable(opts.debug)
   }
   if (app.network) {
     opts.network = app.network
@@ -45,31 +56,30 @@ async function cli(app) {
     opts.privateKey = app.privateKey
   }
 
+  const allServices = DApp.coreServices
+  if (allServices.indexOf(app.args[0]) !== -1) {
+    opts.services = [ app.args[0] ]
+  } else {
+    opts.services = []
+  }
+
+  debug('dapp-cli')('Options: %s', JSON.stringify(opts))
+
   const client = new DApp.client(opts)
-  var services = client.getServices()
 
   if (app.args[0] === undefined && !app.listServices) {
     app.outputHelp()
     process.exit(0)
   }
 
-  if (!services[app.args[0]] && app.args[0] !== undefined) {
+  if (allServices.indexOf(app.args[0]) === -1 && app.args[0] !== undefined) {
     const fn = path.join(process.cwd(), app.args[0])
     if (fs.existsSync(fn)) {
       client.addService('custom', fn)
       app.args[0] = 'custom'
-      var services = client.getServices()
     } else {
       err('Service not found: ' + app.args[0])
     }
-  }
-
-  if (app.listServices) {
-    process.stdout.write(`Services:\n`)
-    Object.keys(services).forEach(sId => {
-      process.stdout.write(`  [${sId}] ${services[sId].name}\n`)
-    })
-    process.exit(0)
   }
 
   if (!app.args[1]) {
@@ -77,6 +87,11 @@ async function cli(app) {
   }
 
   const service = await client.service(app.args[0])
+
+  if (!service[app.args[1]]) {
+    err('Method not found: ' + app.args[1] + ' [service=' + app.args[0] + ']')
+  }
+
   const result = await service[app.args[1]].apply(service, app.args.slice(2))
 
   if (result !== null && typeof result === 'object') {
