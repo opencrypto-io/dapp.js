@@ -7,7 +7,7 @@ class ENS extends Service {
     return namehash.hash(domain)
   }
   async _resolverHash (hash) {
-    return this._mcall('registry', 'resolver', [hash])
+    return this.$mcall('registry', 'resolver', [hash])
   }
   async resolver (domain) {
     return this._resolverHash(this._namehash(domain))
@@ -20,7 +20,7 @@ class ENS extends Service {
     if (resolver === '0x0000000000000000000000000000000000000000') {
       return null
     }
-    return this._call(resolver, 'resolver', 'addr', [hash])
+    return this.$call(resolver, 'resolver', 'addr', [hash])
   }
 }
 

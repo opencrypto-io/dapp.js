@@ -12,6 +12,7 @@ class DAppClient {
       network: 'mainnet',
       servicesDir: path.join(__dirname, 'services'),
       services: [
+        'eth',
         'dai',
         'erc20',
         'ds-value',
@@ -51,6 +52,7 @@ class DAppClient {
   }
 
   async addServices (dir, whitelist = null) {
+    this.debug('core', 'Loading services from dir: ' + dir)
     return Promise.all(fs.readdirSync(dir).map(id => {
       const servicePath = path.join(dir, id)
       if (whitelist && whitelist.indexOf(id) === -1) {
@@ -64,6 +66,7 @@ class DAppClient {
   }
 
   async addService (id, path) {
+    this.debug('core', 'Loading service: id='+id+', path='+path)
     this._services[id] = {
       id,
       path,
@@ -121,12 +124,12 @@ class DAppClient {
     Object.keys(args).forEach(prop => {
       args[prop] = localOpts[prop] || defaultProp(prop, service)
     })
-    this.debug('core:contract', 'service=%s, abi=%s, addr=%s, opts=%s', service._index.id, id, args.addr, JSON.stringify(opts))
+    this.debug('core:contract', 'provider=%s, network=%s, service=%s, abi=%s, addr=%s, opts=%s', this._config.provider.type, this._config.network, service._index.id, id, args.addr, JSON.stringify(opts))
     return this._provider.contract(args.abi, args.addr, opts)
   }
 
   async call (service, addr, id, method, opts = []) {
-    this.debug('core:call', 'service=%s, method=%s, addr=%s, opts=%s', service._index.id, method, addr, JSON.stringify(opts))
+    this.debug('core:call', 'provider=%s, network=%s, service=%s, method=%s, addr=%s, opts=%s', this._config.provider.type, this._config.network, service._index.id, method, addr, JSON.stringify(opts))
     const contract = await this.contract(service, id, {}, { addr })
     return this._provider.call(contract, method, opts)
       .catch(err => {
@@ -142,7 +145,7 @@ class DAppClient {
   }
 
   async emit (eventName, res) {
-    this.debug('events:' + eventName, 'Emmited: %s', JSON.stringify(res, null, 2))
+    this.debug('events:' + eventName, 'Emmited: %s', JSON.stringify(res))
     if (!this._eventHandlers[eventName]) {
       return Promise.resolve(res)
     }

@@ -14,23 +14,23 @@ class Dai extends Service {
     return new Cdp(this)
   }
   async getTargetPrice () {
-    return this._mcall('vox', 'par')
+    return this.$mcall('vox', 'par')
   }
   async getLiquidationRatio () {
-    const value = await this._mcall('tub', 'mat')
+    const value = await this.$mcall('tub', 'mat')
     return new this._utils.BN(value.toString()).dividedBy(RAY).toNumber()
   }
   async getDebtValue (id) {
-    return this._mcall('tub', 'tab', [this._cdpId(id)])
+    return this.$mcall('tub', 'tab', [this._cdpId(id)])
   }
   async getCollateralValue (id) {
-    return this._mcall('tub', 'ink', [this._cdpId(id)])
+    return this.$mcall('tub', 'ink', [this._cdpId(id)])
   }
   async getInfo (id) {
-    return this._mcall('tub', 'cups', [this._cdpId(id)])
+    return this.$mcall('tub', 'cups', [this._cdpId(id)])
   }
   async draw (id, value, from) {
-    return this._msend('tub', 'draw', [this._cdpId(id), value], { from })
+    return this.$msend('tub', 'draw', [this._cdpId(id), value], { from })
   }
 }
 

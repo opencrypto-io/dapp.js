@@ -30,7 +30,6 @@ async function cli(app) {
   }
 
   if (app.debug) {
-    console.log(app.debug)
     opts.debug = app.debug === true ? '*' : app.debug
   }
   if (app.network) {
@@ -80,8 +79,11 @@ async function cli(app) {
   const service = await client.service(app.args[0])
   const result = await service[app.args[1]].apply(service, app.args.slice(2))
 
-  process.stdout.write(result + "\n")
-  
+  if (result !== null && typeof result === 'object') {
+    process.stdout.write(JSON.stringify(result, null, 2) + "\n")
+  } else {
+    process.stdout.write(result + "\n")
+  }
 }
 
 cli(program.parse(process.argv))

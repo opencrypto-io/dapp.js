@@ -3,18 +3,18 @@ const Service = require('../..').service
 class ERC20 extends Service {
 
   async getDecimals (tokenAddr) {
-    return this._call(tokenAddr, 'v1', 'decimals')
+    return this.$call(tokenAddr, 'v1', 'decimals')
   }
 
   async getSymbol (tokenAddr) {
-    const symbol = await this._call(tokenAddr, 'v1', 'symbol')
-    return this._utils.hexToAscii(symbol)
+    const symbol = await this.$call(tokenAddr, 'v1', 'symbol')
+    return this.$utils.hexToAscii(symbol)
   }
 
   async getBalance (tokenAddr, owner) {
     const ret = await Promise.all([
       this.getDecimals(tokenAddr),
-      this._call(tokenAddr, 'v1', 'balanceOf', [owner])
+      this.$call(tokenAddr, 'v1', 'balanceOf', [owner])
     ])
     return ret[1] / Math.pow(10, ret[0])
   }
