@@ -31,8 +31,8 @@ dapp-cli ens resolver michalzalecki.test -n rinkeby
 dapp-cli ds-value get 0x729d19f657bd0614b4985cf1d82531c67569197b NumberString
 
 ### Play with ERC-20 tokens
-dapp-cli erc20 getBalance 0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2 0xe4a8dfca175cdca4ae370f5b7aaff24bd1c9c8ef
-dapp-cli erc20 getSymbol 0xc4375b7de8af5a38a93548eb8453a498222c4ff2 -n kovan
+dapp-cli erc20 balance 0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2 0xe4a8dfca175cdca4ae370f5b7aaff24bd1c9c8ef
+dapp-cli erc20 symbol 0xc4375b7de8af5a38a93548eb8453a498222c4ff2 -n kovan
 ```
 
 ## Options

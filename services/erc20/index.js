@@ -2,28 +2,28 @@ const Service = require('../..').service
 
 class ERC20 extends Service {
 
-  async getDecimals (tokenAddr) {
-    return this.$call(tokenAddr, 'v1', 'decimals')
+  async decimals (addr) {
+    return this.$call(addr, 'v1', 'decimals')
   }
 
-  async getSymbol (tokenAddr) {
-    const symbol = await this.$call(tokenAddr, 'v1', 'symbol')
-    return this.$utils.hexToAscii(symbol)
+  async symbol (addr) {
+    const symbolHex = await this.$call(addr, 'v1', 'symbol')
+    return this.$utils.hexToAscii(symbolHex)
   }
 
-  async getBalance (tokenAddr, owner) {
-    const ret = await Promise.all([
-      this.getDecimals(tokenAddr),
-      this.$call(tokenAddr, 'v1', 'balanceOf', [owner])
+  async balance (addr, owner) {
+    const [ decimals, balance ] = await Promise.all([
+      this.decimals(addr),
+      this.$call(addr, 'v1', 'balanceOf', [owner])
     ])
-    return ret[1] / Math.pow(10, ret[0])
+    return balance / Math.pow(10, decimals)
   }
 }
 
 ERC20.createChild('token', [
-  'getDecimals',
-  'getSymbol',
-  'getBalance'
+  'decimals',
+  'symbol',
+  'balance'
 ])
 
 module.exports = {
