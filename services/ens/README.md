@@ -1,4 +1,4 @@
-# <pkg-id>dapp.js-service-ens</pkg-id>
+# <pkg-id>ens</pkg-id>
 
 <pkg-title>Ethereum Name Service (ENS)</pkg-title>
 
@@ -27,11 +27,8 @@ dapp-cli ens resolver michalzalecki.test -n rinkeby
 ## API
 
 <pkg-api>
+
 ### owner
-
-```js
-
-```
 
 * **Params:** 
   * {string} domain - The ENS domain name. 
@@ -41,10 +38,6 @@ Get owner (address) of the domain.
 
 
 ### resolver
-
-```js
-
-```
 
 * **Params:** 
   * {string} domain - The ENS domain name. 
