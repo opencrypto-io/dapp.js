@@ -54,7 +54,7 @@ dapp-cli ens lookup apt-get.eth    # Use 'ens' module for ENS lookup
 dapp-cli ./your_service [..]       # Use your own service
 ```
 
-Please follow [cli/](cli/) for more informations.
+Please follow [dapp.js-cli](cli/) for more informations.
 
 ## Authors
 
