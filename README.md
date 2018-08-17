@@ -8,7 +8,7 @@
 
 * **Works out-of-the-box**
 * **Minimalistic, human-friendly API**
-* **Provider library agnostic**, currently supported [web3.js 1.x](https://github.com/ethereum/web3.js/) (default) and [ethjs](https://github.com/ethjs/ethjs) (planned: [ethers.js](https://github.com/ethers-io/ethers.js))
+* **Provider library agnostic** - currently supported [web3.js 1.x](https://github.com/ethereum/web3.js/) (default) and [ethjs](https://github.com/ethjs/ethjs) (planned: [ethers.js](https://github.com/ethers-io/ethers.js))
 * **Basic services included** in the standart library - `ens`, `erc20` .. [show all](https://github.com/opencrypto-io/dapp.js/tree/master/services)
 * **[Command-line interface (CLI)](/cli)**
 
@@ -46,11 +46,19 @@ client.service('price-feed').then(service => {
 
 ## Command-line interface (CLI)
 
-Please read [cli/README.md](cli/README.md) for more informations.
+```bash
+npm i -g opencrypto-io/dapp.js     # Install CLI via NPM
+dapp-cli -l                        # List available services
+dapp-cli -h                        # Show help
+dapp-cli ens lookup apt-get.eth    # Use 'ens' module for ENS lookup
+dapp-cli ./your_service [..]       # Use your own service
+```
+
+Please follow [cli/](cli/) for more informations.
 
 ## Authors
 
-* Jan Stránský <jan.stransky@arnal.cz>
+* Jan Stránský &lt;jan.stransky@arnal.cz&gt;
 
 ## License
 MIT
