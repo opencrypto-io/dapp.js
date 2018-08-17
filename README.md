@@ -7,6 +7,7 @@
 ## Features
 
 * **Works out-of-the-box**
+* **Minimalistic, human-friendly API**
 * **Provider library agnostic** - currently supported:
   * [web3.js 1.x](https://github.com/ethereum/web3.js/) (default)
   * [ethjs](https://github.com/ethjs/ethjs)
