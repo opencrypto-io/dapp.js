@@ -8,10 +8,10 @@
 
 * Work out-of-the-box
 * Provider library agnostic - currently supported:
-  * [web3.js 1.x] (https://github.com/ethereum/web3.js/) (default)
+  * [web3.js 1.x](https://github.com/ethereum/web3.js/) (default)
   * [ethjs](https://github.com/ethjs/ethjs)
   * planned: [ethers.js](https://github.com/ethers-io/ethers.js)
-* Basic services included in the standart library (ens, erc20 .. [see all](https://github.com/opencrypto-io/dapp.js/tree/master/services))
+* Basic services included in the standart library (`ens`, `erc20` .. [see all](https://github.com/opencrypto-io/dapp.js/tree/master/services))
 * [Command-line interface (CLI)](/cli)
 
 ## Usage
