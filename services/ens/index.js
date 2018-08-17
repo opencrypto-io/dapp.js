@@ -1,9 +1,16 @@
+/**
+ * ENS (Ethereum Name Service)
+ * @module ens
+ */
 
 const Service = require('../..').service
 const namehash = require('eth-ens-namehash')
 
 const emptyResolver = '0x0000000000000000000000000000000000000000'
 
+/**
+ * ENS Service
+ */
 class ENS extends Service {
   _namehash (domain) {
     return namehash.hash(domain)
@@ -23,15 +30,41 @@ class ENS extends Service {
     }
     return this.$call(resolver, 'resolver', method, [hash])
   }
+  /**
+   * Get owner (address) of the domain.
+   * @param {string} domain - The ENS domain name.
+   * @return {promise} Promise (resolves to the owner address)
+   */
   async owner (domain) {
     return this.$mcall('registry', 'owner', [this._namehash(domain)])
   }
+  /**
+   * Get resolver (address) for the domain.
+   * @param {string} domain - The ENS domain name.
+   * @return {promise} Promise (resolves to the resolver address)
+   */
   async resolver (domain) {
     return this._resolverHash(this._namehash(domain))
   }
+  /**
+   * Resolve domain to address.
+   * @param {string} domain - The ENS domain name.
+   * @return {promise} Promise (resolves to the address)
+   *
+   * @example
+   * const addr = await ens.lookup('apt-get.eth')
+   */
   async lookup (domain) {
     return this._resolveName(domain, 'addr')
   }
+  /**
+   * Make reverse lookup for domain.
+   * @param {string} address - Address
+   * @return {promise} Promise (resolves to the domain)
+   *
+   * @example
+   * const domain = await ens.reverse('0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb')
+   */
   async reverse (addr) {
     if (addr.startsWith('0x')) {
       addr = addr.slice(2)
