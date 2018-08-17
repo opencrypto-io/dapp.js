@@ -16,6 +16,7 @@ program
   .option('-n, --network <name>', 'use specified network')
   .option('-u, --provider-url <address>', 'use specified url for provider')
   .option('-k, --private-key <string>', 'use private key')
+  .option('--api-key <string>', 'Specify API key for Infura provider')
   .option('-l, --list-services', 'list available services')
   .option('--debug [scope]', 'Turn on debug mode')
   .version(pkg.version, '-v, --version')
@@ -53,6 +54,9 @@ async function cli(app) {
   }
   if (app.providerUrl) {
     opts.provider.url = app.providerUrl
+  }
+  if (app.apiKey) {
+    opts.provider.apiKey = app.apiKey
   }
   if (app.privateKey) {
     opts.privateKey = app.privateKey

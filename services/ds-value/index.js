@@ -1,6 +1,7 @@
 const Service = require('../../lib/service')
 
 class DSValue extends Service {
+
   async set (addr, type = 'Hex') {
   }
 

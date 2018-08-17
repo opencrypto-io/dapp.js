@@ -11,7 +11,8 @@ const coreServices = [
   'erc20',
   'ds-value',
   'ens',
-  'dai'
+  'dai',
+  'price-feed'
 ]
 
 class DAppClient {
@@ -149,6 +150,12 @@ class DAppClient {
     this.debug('core:send', JSON.stringify({ addr, id, method, opts, sendOpts }))
     const contract = await this.contract(service, id, {}, { addr })
     return this._provider.send(contract, method, opts, sendOpts)
+  }
+
+  async contractEvents (service, addr, id, name, ...args) {
+    this.debug('core:events', JSON.stringify({ addr, id, name }))
+    const contract = await this.contract(service, id, {}, { addr })
+    return this._provider.contractEvents(contract, name, ...args)
   }
 
   async emit (eventName, res) {
