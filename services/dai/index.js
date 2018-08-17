@@ -6,11 +6,17 @@ const WAD = new Service.utils.BigNumber('1e18')
 const DAI = new Service.utils.createCurrency('DAI')
 const PETH = new Service.utils.createCurrency('PETH')
 
+/**
+ * Dai Service
+ */
 class Dai extends Service {
   _cdpId (id) {
     return this.$utils.numberToBytes32(id)
   }
-  // Get Target price
+  /**
+   * Get target price.
+   * @returns {promise} Promise (resolves to target price)
+   */
   async targetPrice () {
     return this.$mcall('vox', 'par')
   }
