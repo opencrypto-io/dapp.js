@@ -1,6 +1,6 @@
-# dapp.js-ens
+# <pkg-id>dapp.js-service-ens</pkg-id>
 
-ENS (Ethereum Name Service)
+<pkg-title>Ethereum Name Service (ENS)</pkg-title>
 
 ## Usage
 
@@ -26,37 +26,55 @@ dapp-cli ens resolver michalzalecki.test -n rinkeby
 
 ## API
 
-### **lookup** (domain)
+<pkg-api>
+### owner
 
-```javascript
+```js
+
+```
+
+* **Params:** 
+  * {string} domain - The ENS domain name. 
+* **Returns:** {promise} Promise (resolves to the owner address)
+
+Get owner (address) of the domain.
+
+
+### resolver
+
+```js
+
+```
+
+* **Params:** 
+  * {string} domain - The ENS domain name. 
+* **Returns:** {promise} Promise (resolves to the resolver address)
+
+Get resolver (address) for the domain.
+
+
+### lookup
+
+```js
 const addr = await ens.lookup('apt-get.eth')
 ```
 
-* **Params:** domain
-* **Returns:** promise (resolves to the target address)
+* **Params:** 
+  * {string} domain - The ENS domain name. 
+* **Returns:** {promise} Promise (resolves to the address)
 
-`ens.lookup()` returns the target address of specified domain.
+Resolve domain to address.
 
 
-### **reverse** (address)
+### reverse
 
-```
+```js
 const domain = await ens.reverse('0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb')
 ```
 
-* **Params:** address
-* **Returns:** promise (resolves to the domain)
+* **Params:** 
+  * {string} address - Address 
+* **Returns:** {promise} Promise (resolves to the domain)
 
-`ens.reverse()` returns the domain of specified address.
-
-
-### **resolver** (domain)
-
-```
-const resolver = await ens.resolver('atp-get.eth')
-```
-
-* **Params:** domain
-* **Returns:** promise (resolves to the resolver address)
-
-`ens.resolver()` returns the resolver address of specified domain.
+Make reverse lookup for domain.
+</pkg-api>
