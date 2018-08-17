@@ -1,7 +1,3 @@
-/**
- * ENS (Ethereum Name Service)
- * @module ens
- */
 
 const Service = require('../..').service
 const namehash = require('eth-ens-namehash')
@@ -12,12 +8,15 @@ const emptyResolver = '0x0000000000000000000000000000000000000000'
  * ENS Service
  */
 class ENS extends Service {
+
   _namehash (domain) {
     return namehash.hash(domain)
   }
+
   async _resolverHash (hash) {
     return this.$mcall('registry', 'resolver', [hash])
   }
+
   async _resolveName (name, method = 'addr', resolver = null) {
     const hash = this._namehash(name)
     this.$debug('Resolve name: %s type=%s hash=%s', name, method, hash)
@@ -30,6 +29,7 @@ class ENS extends Service {
     }
     return this.$call(resolver, 'resolver', method, [hash])
   }
+
   /**
    * Get owner (address) of the domain.
    * @param {string} domain - The ENS domain name.
@@ -38,6 +38,7 @@ class ENS extends Service {
   async owner (domain) {
     return this.$mcall('registry', 'owner', [this._namehash(domain)])
   }
+
   /**
    * Get resolver (address) for the domain.
    * @param {string} domain - The ENS domain name.
@@ -46,6 +47,7 @@ class ENS extends Service {
   async resolver (domain) {
     return this._resolverHash(this._namehash(domain))
   }
+
   /**
    * Resolve domain to address.
    * @param {string} domain - The ENS domain name.
@@ -57,6 +59,7 @@ class ENS extends Service {
   async lookup (domain) {
     return this._resolveName(domain, 'addr')
   }
+
   /**
    * Make reverse lookup for domain.
    * @param {string} address - Address
@@ -73,6 +76,7 @@ class ENS extends Service {
     this.$debug('Reverse lookup: %s', name)
     return this._resolveName(name, 'name')
   }
+
   async info (domain) {
     const resolver = await this.resolver(domain)
     const [ owner, addr ] = await Promise.all([
