@@ -1,4 +1,4 @@
-# dapp.js CLI
+# dapp.js-cli
 
 Command-line tool for easy interaction with smart-contracts via [**dapp.js**](https://github.com/opencrypto-io/dapp.js) & their services.
 
