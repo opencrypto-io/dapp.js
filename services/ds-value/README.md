@@ -4,13 +4,7 @@
 
 
 
-## Contracts
-No mapping
-
-
-
 ## API
-
 
 ### get (address, [type])
 
@@ -22,7 +16,6 @@ No mapping
 
 Get a value.
 
-
 ### set (address, [type])
 
 * **Params:** 
@@ -32,4 +25,7 @@ Get a value.
   * {promise} Promise (resolves to transaction promise)
 
 Set a value.
+
+## Contracts mapping
+No mapping
 

@@ -4,25 +4,6 @@
 
 
 
-## Contracts
-
-### Mainnet
-Name | Address | ABI
---- | --- | ---
-registry | [314159265dd8dbb310642f98f50c066173c1259b](https://etherscan.io/address/314159265dd8dbb310642f98f50c066173c1259b) | [ABI](abi/registry.json)
-
-### Ropsten
-Name | Address | ABI
---- | --- | ---
-registry | [0x112234455c3a32fd11230c42e7bccd4a84e02010](https://ropsten.etherscan.io/address/0x112234455c3a32fd11230c42e7bccd4a84e02010) | [ABI](abi/registry.json)
-
-### Rinkeby
-Name | Address | ABI
---- | --- | ---
-registry | [0xe7410170f87102df0055eb195163a03b7f2bff4a](https://rinkeby.etherscan.io/address/0xe7410170f87102df0055eb195163a03b7f2bff4a) | [ABI](abi/registry.json)
-
-
-
 ## Usage
 
 ### As Library
@@ -45,9 +26,7 @@ dapp-cli ens reverse 0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb
 dapp-cli ens resolver michalzalecki.test -n rinkeby
 ```
 
-
 ## API
-
 
 ### lookup (domain)
 
@@ -62,7 +41,6 @@ const addr = await ens.lookup('apt-get.eth')
 
 Resolve domain to address.
 
-
 ### owner (domain)
 
 * **Params:** 
@@ -72,7 +50,6 @@ Resolve domain to address.
 
 Get owner (address) of the domain.
 
-
 ### resolver (domain)
 
 * **Params:** 
@@ -81,7 +58,6 @@ Get owner (address) of the domain.
   * {promise} Promise (resolves to the resolver address)
 
 Get resolver (address) for the domain.
-
 
 ### reverse (address)
 
@@ -95,4 +71,21 @@ const domain = await ens.reverse('0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb')
   * {promise} Promise (resolves to the domain)
 
 Make reverse lookup for domain.
+
+## Contracts mapping
+
+### Mainnet
+Name | Address | ABI
+--- | --- | ---
+registry | [314159265dd8dbb310642f98f50c066173c1259b](https://etherscan.io/address/314159265dd8dbb310642f98f50c066173c1259b) | [registry.json](abi/registry.json)
+
+### Ropsten
+Name | Address | ABI
+--- | --- | ---
+registry | [0x112234455c3a32fd11230c42e7bccd4a84e02010](https://ropsten.etherscan.io/address/0x112234455c3a32fd11230c42e7bccd4a84e02010) | [registry.json](abi/registry.json)
+
+### Rinkeby
+Name | Address | ABI
+--- | --- | ---
+registry | [0xe7410170f87102df0055eb195163a03b7f2bff4a](https://rinkeby.etherscan.io/address/0xe7410170f87102df0055eb195163a03b7f2bff4a) | [registry.json](abi/registry.json)
 
