@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const debug = require('debug')
 
-//const providers = require('./lib/providers')
+// const providers = require('./lib/providers')
 const Provider = require('./lib/provider')
 const Service = require('./lib/service')
 
@@ -16,7 +16,6 @@ const coreServices = [
 ]
 
 class DAppClient {
-
   constructor (config = {}) {
     this._defaultConfig = {
       network: 'mainnet',
@@ -48,7 +47,7 @@ class DAppClient {
     // Load selected provider
     const [ providerName, providerSubType ] = this._config.provider.type.split('/')
     this.debug('core', 'Loading provider: %s', providerName)
-    const provider = require('./lib/providers/'+providerName)
+    const provider = require('./lib/providers/' + providerName)
     this._provider = new provider[providerSubType](this)
 
     // Load services
@@ -68,13 +67,13 @@ class DAppClient {
       }
       return this.addService(id, servicePath)
     }))
-    .then(() => {
-      return this.emit('servicesLoaded', this.getServices())
-    })
+      .then(() => {
+        return this.emit('servicesLoaded', this.getServices())
+      })
   }
 
   async addService (id, path) {
-    this.debug('core', 'Loading service: id='+id+', path='+path)
+    this.debug('core', 'Loading service: id=' + id + ', path=' + path)
     this._services[id] = {
       id,
       path,
@@ -116,7 +115,7 @@ class DAppClient {
   }
 
   async contract (service, id, opts = {}, localOpts = {}) {
-    //this._debug('Contract')(service, id, opts, localOpts)
+    // this._debug('Contract')(service, id, opts, localOpts)
     const args = {
       abi: null,
       addr: null

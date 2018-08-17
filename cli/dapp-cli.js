@@ -21,13 +21,12 @@ program
   .option('--debug [scope]', 'Turn on debug mode')
   .version(pkg.version, '-v, --version')
 
-function err(msg) {
+function err (msg) {
   console.error(msg)
   process.exit(1)
 }
 
-async function cli(app) {
-
+async function cli (app) {
   if (app.listServices) {
     process.stdout.write(`Services:\n`)
     const client = new DApp.client()

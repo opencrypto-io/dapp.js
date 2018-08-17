@@ -1,7 +1,6 @@
 const Service = require('../..').service
 
 class ERC20 extends Service {
-
   async decimals (addr) {
     return this.$call(addr, 'v1', 'decimals')
   }

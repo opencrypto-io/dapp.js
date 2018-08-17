@@ -6,7 +6,6 @@ const Service = require('../..').service
 // Source: https://github.com/makerdao/price-feed/blob/master/src/price-feed.sol
 
 class PriceFeed extends Service {
-
   async get (addr, ray = 18) {
     const value = await this.$call(addr, 'PriceFeed', 'read')
     return this.$utils.toDecimal(value, 18)
@@ -44,6 +43,6 @@ PriceFeed.createChild('contract', [
 ])
 
 module.exports = {
-  name: "Price Feed (MakerDAO)",
+  name: 'Price Feed (MakerDAO)',
   api: PriceFeed
 }

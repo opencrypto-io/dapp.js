@@ -3,7 +3,7 @@ async function test () {
   const DApp = require('..')
   const client = new DApp.client({
     provider: {
-      type: "ethjs/infura"
+      type: 'ethjs/infura'
     }
   })
   const erc = await client.service('erc20')
@@ -12,8 +12,6 @@ async function test () {
 
   console.log('symbol:', await token.symbol())
   console.log('balance:', await token.balance('0xc1691ae1b3a19923ca4ea9d25176092f4112a7f1'))
-
 }
 
 test()
-

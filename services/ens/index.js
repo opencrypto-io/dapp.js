@@ -8,7 +8,6 @@ const emptyResolver = '0x0000000000000000000000000000000000000000'
  * ENS Service
  */
 class ENS extends Service {
-
   _namehash (domain) {
     return namehash.hash(domain)
   }
@@ -17,7 +16,7 @@ class ENS extends Service {
     return this.$mcall('registry', 'resolver', [hash])
   }
 
-  async _resolveName (name, method = 'addr', resolver = null) {
+  async _resolveDomain (name, method = 'addr', resolver = null) {
     const hash = this._namehash(name)
     this.$debug('Resolve name: %s type=%s hash=%s', name, method, hash)
     if (!resolver) {
@@ -57,7 +56,7 @@ class ENS extends Service {
    * const addr = await ens.lookup('apt-get.eth')
    */
   async lookup (domain) {
-    return this._resolveName(domain, 'addr')
+    return this._resolveDomain(domain, 'addr')
   }
 
   /**
@@ -72,16 +71,16 @@ class ENS extends Service {
     if (addr.startsWith('0x')) {
       addr = addr.slice(2)
     }
-    const name = addr.toLowerCase() + '.addr.reverse'
+    const domain = addr.toLowerCase() + '.addr.reverse'
     this.$debug('Reverse lookup: %s', name)
-    return this._resolveName(name, 'name')
+    return this._resolveDomain(domain, 'name')
   }
 
   async info (domain) {
     const resolver = await this.resolver(domain)
     const [ owner, addr ] = await Promise.all([
       this.owner(domain),
-      this._resolveName(name, 'addr', resolver)
+      this._resolveDomain(domain, 'addr', resolver)
     ])
     return { owner, resolver, addr }
   }

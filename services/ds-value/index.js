@@ -5,7 +5,6 @@ const Service = require('../../lib/service')
  * Source: https://github.com/dapphub/ds-value
  */
 class DSValue extends Service {
-
   /**
    * Set a value.
    * @param {string} address - The address of target contract
