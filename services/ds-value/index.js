@@ -1,8 +1,8 @@
 const Service = require('../../lib/service')
 
 /**
- * ds-value - Set and get a value.
- * Source: https://github.com/dapphub/ds-value
+ * DSValue service.
+ * Contract Source: https://github.com/dapphub/ds-value
  */
 class DSValue extends Service {
   /**

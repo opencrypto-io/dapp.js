@@ -2,6 +2,8 @@
 # ds-value
 **DSValue**
 
+DSValue service.
+Contract Source: https://github.com/dapphub/ds-value
 
 
 ## API
