@@ -2,7 +2,7 @@
 
 **EXPERIMENTAL VERSION - Don't use on production**
 
-**dapp.js** is a JavaScript library that provides a single, common abstraction interface of smart-contracts. Library makes easy to build applications on top of Ethereum blockchain.
+**dapp.js** is a JavaScript library & framework that provides a single, common abstraction interface of smart-contracts. Framework makes easy to build applications on top of Ethereum decentralized applications ([DApps](https://en.wikipedia.org/wiki/Decentralized_application)).
 
 ## Usage
 
