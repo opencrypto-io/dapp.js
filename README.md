@@ -54,6 +54,8 @@ Id | Name | Status
 **[price-feed](services/price-feed)** | Price Feed (MakerDAO) | in progress
 **medianizer** | Medianizer (MakerDAO) | planned
 **weth** | WETH Token | planned
+**oasis** | OasisDEX (decentralized exchange) | planned
+**0x** | 0x Protocol | planned
 
 ## Command-line interface (CLI)
 
