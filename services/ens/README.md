@@ -5,35 +5,38 @@
 ENS Service
 
 
+
 ## Usage
 
 ### As Library
-```javascript
+&#x60;&#x60;&#x60;javascript
 
-const DApp = require('dapp.js')
-const client = new DApp.client()
+const DApp &#x3D; require(&#x27;dapp.js&#x27;)
+const client &#x3D; new DApp.client()
 
-const ens = await client.service('ens')
-const addr = await ens.lookup('apt-get.eth')
-console.log('resolved address:', addr)
+const ens &#x3D; await client.service(&#x27;ens&#x27;)
+const addr &#x3D; await ens.lookup(&#x27;apt-get.eth&#x27;)
+console.log(&#x27;resolved address:&#x27;, addr)
 
-```
+&#x60;&#x60;&#x60;
 
 ### From [command-line](/cli)
 
-```
+&#x60;&#x60;&#x60;
 dapp-cli ens lookup apt-get.eth
 dapp-cli ens reverse 0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb
 dapp-cli ens resolver michalzalecki.test -n rinkeby
-```
+&#x60;&#x60;&#x60;
+
 
 ## API
 
+
 ### lookup (domain)
 
-```js
-const addr = await ens.lookup('apt-get.eth')
-```
+&#x60;&#x60;&#x60;js
+const addr &#x3D; await ens.lookup(&#x27;apt-get.eth&#x27;)
+&#x60;&#x60;&#x60;
 
 * **Params:** 
   * {string} domain - The ENS domain name. 
@@ -41,6 +44,7 @@ const addr = await ens.lookup('apt-get.eth')
   * {promise} Promise (resolves to the address)
 
 Resolve domain to address.
+
 
 ### owner (domain)
 
@@ -51,6 +55,7 @@ Resolve domain to address.
 
 Get owner (address) of the domain.
 
+
 ### resolver (domain)
 
 * **Params:** 
@@ -60,11 +65,12 @@ Get owner (address) of the domain.
 
 Get resolver (address) for the domain.
 
+
 ### reverse (address)
 
-```js
-const domain = await ens.reverse('0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb')
-```
+&#x60;&#x60;&#x60;js
+const domain &#x3D; await ens.reverse(&#x27;0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb&#x27;)
+&#x60;&#x60;&#x60;
 
 * **Params:** 
   * {string} address - Address 
@@ -72,6 +78,7 @@ const domain = await ens.reverse('0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb')
   * {promise} Promise (resolves to the domain)
 
 Make reverse lookup for domain.
+
 
 ## Contracts mapping
 

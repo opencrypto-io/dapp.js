@@ -6,7 +6,9 @@ DSValue service.
 Contract Source: https://github.com/dapphub/ds-value
 
 
+
 ## API
+
 
 ### get (address, [type])
 
@@ -18,6 +20,7 @@ Contract Source: https://github.com/dapphub/ds-value
 
 Get a value.
 
+
 ### set (address, [type])
 
 * **Params:** 
@@ -27,6 +30,7 @@ Get a value.
   * {promise} Promise (resolves to transaction promise)
 
 Set a value.
+
 
 ## Contracts mapping
 No mapping

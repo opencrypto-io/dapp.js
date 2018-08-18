@@ -5,7 +5,9 @@
 Dai Service
 
 
+
 ## API
+
 
 ### targetPrice ()
 
@@ -15,6 +17,7 @@ Dai Service
   * {promise} Promise (resolves to target price)
 
 Get target price.
+
 
 ## Contracts mapping
 
