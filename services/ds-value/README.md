@@ -32,6 +32,4 @@ Get a value.
 Set a value.
 
 
-## Contracts mapping
-No mapping
 
