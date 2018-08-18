@@ -47,6 +47,7 @@ client.service('price-feed').then(service => {
 
 Id | Name | Status
 --- | --- | ---
+**[eth](services/eth)** | Ethereum core functions | in progress
 **[ens](services/ens)** | Ethereum Name System (ENS) | in progress
 **[erc20](services/erc20)** | ERC-20 Tokens | in progress
 **[ds-value](services/ds-value)** | DSValue (DAppHub) | in progress
