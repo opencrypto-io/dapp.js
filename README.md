@@ -43,6 +43,17 @@ client.service('price-feed').then(service => {
 })
 ```
 
+## Core Services
+
+Id | Name | Status
+--- | --- | ---
+**[ens](services/ens)** | Ethereum Name System (ENS) | in progress
+**[erc20](services/erc20)** | ERC-20 Tokens | in progress
+**[ds-value](services/ds-value)** | DSValue (DAppHub) | in progress
+**[dai](services/dai)** | Dai Stablecoin System | in progress
+**[price-feed](services/price-feed)** | Price Feed (MakerDAO) | in progress
+**medianizer** | Medianizer (MakerDAO) | planned
+**weth** | WETH Token | planned
 
 ## Command-line interface (CLI)
 
